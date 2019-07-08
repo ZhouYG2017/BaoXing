@@ -1,0 +1,37 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core.dll" #>
+<#@ assembly name="System.Data.dll" #>
+<#@ assembly name="System.Data.DataSetExtensions.dll" #>
+<#@ assembly name="System.Xml.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ include file="$(ProjectDir)DbHelper.ttinclude"  #>
+
+
+<# 
+	var tableName=config.TableName.Replace("Sys_","").Replace("Tbl_","")+"Entity";
+	
+ #>
+
+using System;
+namespace DoNet.Domain.Entity
+{	
+	/// <summary>
+	/// <#=tableName#>
+	/// </summary>	
+	public class <#=tableName#>:IEntity<<#=tableName#>>, ICreationAudited, IDeleteAudited, IModificationAudited
+	{
+<# foreach(DbColumn column in DbHelper.GetDbColumns(config.ConnectionString, config.DbDatabase, config.TableName)){#>
+	  public <#= column.CSharpType#><# if(column.CommonType.IsValueType && column.IsNullable){#>?<#}#> <#=column.ColumnName#> { get; set; }
+<#}#> 
+    }
+}
+
+
+

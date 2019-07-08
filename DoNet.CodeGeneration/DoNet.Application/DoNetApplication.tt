@@ -1,0 +1,70 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core.dll" #>
+<#@ assembly name="System.Data.dll" #>
+<#@ assembly name="System.Data.DataSetExtensions.dll" #>
+<#@ assembly name="System.Xml.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ include file="$(ProjectDir)DbHelper.ttinclude"  #>
+
+<# 
+	var tableName=config.TableName.Replace("Sys_","").Replace("Tbl_","")+"App";
+	var entity=config.TableName.Replace("Sys_","").Replace("Tbl_","")+"Entity";
+	var repository=config.TableName.Replace("Sys_","").Replace("Tbl_","")+"Repository";
+ #>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using DoNet.Domain.Entity;
+using DoNet.Domain.IRepository;
+using DoNet.Repository;
+namespace DoNet.Application
+{	
+	/// <summary>
+	/// <#=tableName#>
+	/// </summary>	
+	public class <#=tableName#>
+	{
+	    private I<#=repository#> service=new <#=repository#>();
+
+		public List<<#=entity#>> GetList()
+        {
+            return service.IQueryable().ToList();
+        }
+
+	    public <#=entity#> GetForm(string keyValue)
+        {
+            return service.FindEntity(keyValue);
+        }
+
+        public void Delete(<#=entity#> entity)
+        {
+            service.Delete(entity);
+        }
+
+		public void SubmitForm(<#=entity#> entity, string keyValue)
+        {
+            if (!string.IsNullOrEmpty(keyValue))
+            {
+                entity.Modify(keyValue);
+                service.Update(entity);
+            }
+            else
+            {
+                entity.Create();
+                service.Insert(entity);
+            }
+        }
+
+    }
+}
+
+
+

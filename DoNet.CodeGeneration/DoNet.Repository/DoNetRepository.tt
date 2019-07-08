@@ -1,0 +1,41 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core.dll" #>
+<#@ assembly name="System.Data.dll" #>
+<#@ assembly name="System.Data.DataSetExtensions.dll" #>
+<#@ assembly name="System.Xml.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ include file="$(ProjectDir)DbHelper.ttinclude"  #>
+
+<# 
+	var tableName=config.TableName.Replace("Sys_","").Replace("Tbl_","")+"Repository";
+	var entity=config.TableName.Replace("Sys_","").Replace("Tbl_","")+"Entity";
+ #>
+using DoNet.Data;
+using DoNet.Domain.Entity;
+using DoNet.Domain.IRepository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DoNet.Repository
+{	
+	/// <summary>
+	/// <#=tableName#>
+	/// </summary>	
+	public class <#=tableName#>:RepositoryBase<<#=entity#>>,I<#=tableName#>
+	{
+
+    }
+}
+
+
+
