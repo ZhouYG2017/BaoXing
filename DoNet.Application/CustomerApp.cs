@@ -14,7 +14,7 @@ namespace DoNet.Application
     /// </summary>	
     public class CustomerApp
     {
-        private ICustomerRepository service =new CustomerRepository();
+        public ICustomerRepository service { get; set; }
 
         public List<CustomerEntity> GetList()
         {

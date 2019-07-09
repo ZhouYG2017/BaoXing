@@ -16,8 +16,7 @@ namespace DoNet.WebAPI.Controllers
     /// </summary>
     public class CustomerController : ApiController
     {
-        //private CustomerApp customerApp = new CustomerApp();
-        private CustomerApp customerApp { get; set; }
+        public CustomerApp customerApp { get; set; }
 
         /// <summary>
         /// 登录
