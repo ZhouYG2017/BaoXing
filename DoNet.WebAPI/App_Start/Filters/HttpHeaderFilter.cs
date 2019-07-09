@@ -21,7 +21,7 @@ namespace DoNet.WebAPI
             var allowAnonymous = apiDescription.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any();
             if (isAuthorized && !allowAnonymous)
             {
-                operation.parameters.Add(new Parameter { name = "token", @in = "header", description = "Token", required = false, type = "string" });
+                operation.parameters.Add(new Parameter { name = "Token", @in = "header", description = "Token", required = false, type = "string" });
             }
         }
     }

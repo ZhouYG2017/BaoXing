@@ -27,9 +27,12 @@ namespace DoNet.Application
 
             if (customerEntity!=null)
             {
-                string Password = Md5.md5(DESEncrypt.Encrypt(paramLogin.Password, customerEntity.F_UserSecretkey).ToLower(), 32).ToLower();
+                string Password = Md5.md5(DESEncrypt.Encrypt(paramLogin.Password, customerEntity.F_UserSecretkey??"").ToLower(), 32).ToLower();
                 if (customerEntity.F_password==Password)
                 {
+                    var payload = new Dictionary<string, object>();
+                    payload.Add("F_Id", customerEntity.F_Id);
+                    payload.Add("F_CustomerName", customerEntity.F_CustomerName);
                     return new Response<LoginResponse>()
                     {
                         Code = "200",
@@ -38,7 +41,7 @@ namespace DoNet.Application
                         {
                             Id=customerEntity.F_Id,
                             CustomerName=customerEntity.F_CustomerName,
-                            Token = ""
+                            Token = JwtHelper.SetJwtEncode(payload)
                         }
                     };
                 }
@@ -53,13 +56,29 @@ namespace DoNet.Application
             }
 
         }
-        public bool AddCustomer(ParamAddCustomer paramAddCustomer)
+        public Response AddCustomer(ParamAddCustomer paramAddCustomer)
         {
+            Response response = new Response();
             CustomerEntity entity = new CustomerEntity() {
                 F_CustomerName = paramAddCustomer.CustomerName,
                 F_password = paramAddCustomer.Password
             };
-            return this.SubmitForm(entity,"");
+            if (this.SubmitForm(entity, "")>0) {
+                response = new Response()
+                {
+                    Code="200",
+                    Message="新增成功"
+                };
+            }
+            else
+            {
+                response = new Response()
+                {
+                    Code = "500",
+                    Message = "新增错误"
+                };
+            }
+            return response;
         }
         public CustomerEntity GetForm(string keyValue)
         {
@@ -71,19 +90,19 @@ namespace DoNet.Application
             service.Delete(entity);
         }
 
-        public bool SubmitForm(CustomerEntity entity, string keyValue)
+        public int SubmitForm(CustomerEntity entity, string keyValue)
         {
             if (!string.IsNullOrEmpty(keyValue))
             {
                 entity.Modify(keyValue);
-                return service.Update(entity)>0;
+                return service.Update(entity);
             }
             else
             {
                 entity.Create();
                 entity.F_UserSecretkey = Md5.md5(Common.CreateNo(), 16).ToLower();
                 entity.F_password = Md5.md5(DESEncrypt.Encrypt(Md5.md5(entity.F_password, 32).ToLower(), entity.F_UserSecretkey).ToLower(), 32).ToLower();
-                return service.Insert(entity)>0;
+                return service.Insert(entity);
             }
         }
 

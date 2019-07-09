@@ -6,6 +6,8 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using System.Net.Http;
 using System.Net;
+using DoNet.Code;
+using DoNet.Domain.Entity;
 
 namespace DoNet.WebAPI
 {
@@ -16,16 +18,21 @@ namespace DoNet.WebAPI
     {
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            string token = actionContext.Request.Headers?.Where(x => x.Key == "token")?.Select(x=>x.Key)?.First();
-            if (token==null)
+            var content = actionContext.Request.Properties["MS_HttpContext"] as HttpContextBase;
+            var token = content.Request.Headers["Token"]; 
+            if (token.IsEmpty())
             {
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, new
                 {
-                    Code="401",
-                    Message="token为空"
+                    Code = "401",
+                    Message = "Token为空"
                 });
             }
-            base.OnAuthorization(actionContext);
+            else
+            {
+                var entity = JwtHelper.GetJwtDecode<CustomerEntity>(token);
+                base.OnAuthorization(actionContext);
+            }
         }
     }
 }

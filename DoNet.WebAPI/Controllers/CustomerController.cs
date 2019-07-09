@@ -14,16 +14,17 @@ namespace DoNet.WebAPI.Controllers
     /// <summary>
     /// 客户
     /// </summary>
-    public class CustomerController : baseApiController
+    public class CustomerController : ApiController
     {
-        private CustomerApp customerApp = new CustomerApp();
+        //private CustomerApp customerApp = new CustomerApp();
+        private CustomerApp customerApp { get; set; }
 
         /// <summary>
         /// 登录
         /// </summary>
         /// <param name="paramLogin"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         public Response<LoginResponse> Login(ParamLogin paramLogin)
         {
             return customerApp.Login(paramLogin);
@@ -34,17 +35,14 @@ namespace DoNet.WebAPI.Controllers
         /// <param name="paramAddCustomer"></param>
         /// <returns></returns>
         [HttpPost]
-        public HttpResponseMessage AddCustomer(ParamAddCustomer paramAddCustomer)
+        public Response AddCustomer(ParamAddCustomer paramAddCustomer)
         {
-            var result = customerApp.AddCustomer(paramAddCustomer);
-            if (result)
-            {
-                return ToResponseMessage(true, "200", "新增用户成功");
-            }
-            else
-            {
-                return ToResponseMessage(false, "500", "新增用户出错");
-            }
+            return customerApp.AddCustomer(paramAddCustomer);
+        }
+        [CustomerAuthorization]
+        [HttpPost]
+        public void Test()
+        {
         }
     }
 }
