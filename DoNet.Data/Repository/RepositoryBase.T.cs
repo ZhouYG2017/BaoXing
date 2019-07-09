@@ -32,7 +32,7 @@ namespace DoNet.Data
         public int Insert(TEntity entity)
         {
             entity = SetCopId(entity);
-            WriteDataOperateLog(entity, DataOperateType.Create);
+            //WriteDataOperateLog(entity, DataOperateType.Create);
             dbcontext.Entry<TEntity>(entity).State = EntityState.Added;
             return dbcontext.SaveChanges();
         }

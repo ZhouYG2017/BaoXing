@@ -8,7 +8,7 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using System.Web.Http.ModelBinding;
 
-namespace DoNet.WebAPI.App_Start
+namespace DoNet.WebAPI
 {
     public class ValidModelAttributepublic: ActionFilterAttribute
     {

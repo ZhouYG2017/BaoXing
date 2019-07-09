@@ -61,6 +61,7 @@
     <Compile Include="01 Infrastructure\IDeleteAudited.cs" />
     <Compile Include="01 Infrastructure\IEntity.cs" />
     <Compile Include="01 Infrastructure\IModificationAudited.cs" />
+    <Compile Include="02 ViewModel\RequestParam\ParamAddCustomer.cs" />
     <Compile Include="02 ViewModel\RequestParam\ParamLogin.cs" />
     <Compile Include="02 ViewModel\Response\LoginResponse.cs" />
     <Compile Include="02 ViewModel\Response\Response.cs" />

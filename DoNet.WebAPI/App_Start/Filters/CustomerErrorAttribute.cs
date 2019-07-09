@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.Http.Filters;
 using System.Web.Mvc;
 
-namespace DoNet.WebAPI.App_Start
+namespace DoNet.WebAPI
 {
     public class CustomerErrorAttribute:ExceptionFilterAttribute
     {

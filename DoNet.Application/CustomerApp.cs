@@ -27,7 +27,7 @@ namespace DoNet.Application
 
             if (customerEntity!=null)
             {
-                string Password = Md5.md5(DESEncrypt.Encrypt(paramLogin.Password, "").ToLower(), 32).ToLower();
+                string Password = Md5.md5(DESEncrypt.Encrypt(paramLogin.Password, customerEntity.F_UserSecretkey).ToLower(), 32).ToLower();
                 if (customerEntity.F_password==Password)
                 {
                     return new Response<LoginResponse>()
@@ -53,6 +53,14 @@ namespace DoNet.Application
             }
 
         }
+        public bool AddCustomer(ParamAddCustomer paramAddCustomer)
+        {
+            CustomerEntity entity = new CustomerEntity() {
+                F_CustomerName = paramAddCustomer.CustomerName,
+                F_password = paramAddCustomer.Password
+            };
+            return this.SubmitForm(entity,"");
+        }
         public CustomerEntity GetForm(string keyValue)
         {
             return service.FindEntity(keyValue);
@@ -63,17 +71,19 @@ namespace DoNet.Application
             service.Delete(entity);
         }
 
-        public void SubmitForm(CustomerEntity entity, string keyValue)
+        public bool SubmitForm(CustomerEntity entity, string keyValue)
         {
             if (!string.IsNullOrEmpty(keyValue))
             {
                 entity.Modify(keyValue);
-                service.Update(entity);
+                return service.Update(entity)>0;
             }
             else
             {
                 entity.Create();
-                service.Insert(entity);
+                entity.F_UserSecretkey = Md5.md5(Common.CreateNo(), 16).ToLower();
+                entity.F_password = Md5.md5(DESEncrypt.Encrypt(Md5.md5(entity.F_password, 32).ToLower(), entity.F_UserSecretkey).ToLower(), 32).ToLower();
+                return service.Insert(entity)>0;
             }
         }
 

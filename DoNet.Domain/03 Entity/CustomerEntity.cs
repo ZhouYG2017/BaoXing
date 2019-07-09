@@ -10,6 +10,8 @@ namespace DoNet.Domain.Entity
         public string F_CustomerName { get; set; }
         public string F_password { get; set; }
         public string F_CreatorUserId { get; set; }
+        public string F_UserSecretkey { get; set; }
+
         public DateTime? F_CreatorTime { get; set; }
         public bool? F_DeleteMark { get; set; }
         public string F_DeleteUserId { get; set; }

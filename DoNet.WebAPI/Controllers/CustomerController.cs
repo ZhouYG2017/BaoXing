@@ -7,23 +7,44 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using DoNet.Code;
 
 namespace DoNet.WebAPI.Controllers
 {
     /// <summary>
     /// 客户
     /// </summary>
-    public class CustomerController : ApiController
+    public class CustomerController : baseApiController
     {
-        private CustomerApp tblCustomerApp =new CustomerApp();
+        private CustomerApp customerApp = new CustomerApp();
 
         /// <summary>
         /// 登录
         /// </summary>
+        /// <param name="paramLogin"></param>
         /// <returns></returns>
+        [HttpGet]
         public Response<LoginResponse> Login(ParamLogin paramLogin)
         {
-            return tblCustomerApp.Login(paramLogin);
+            return customerApp.Login(paramLogin);
+        }
+        /// <summary>
+        /// 新增用户
+        /// </summary>
+        /// <param name="paramAddCustomer"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage AddCustomer(ParamAddCustomer paramAddCustomer)
+        {
+            var result = customerApp.AddCustomer(paramAddCustomer);
+            if (result)
+            {
+                return ToResponseMessage(true, "200", "新增用户成功");
+            }
+            else
+            {
+                return ToResponseMessage(false, "500", "新增用户出错");
+            }
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
-using DoNet.WebAPI.App_Start;
 
 namespace DoNet.WebAPI
 {
@@ -14,11 +13,12 @@ namespace DoNet.WebAPI
 
             // Web API 路由
             config.MapHttpAttributeRoutes();
+
             config.Filters.Add(new CustomerErrorAttribute());
             config.Filters.Add(new ValidModelAttributepublic());
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
+                routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
         }

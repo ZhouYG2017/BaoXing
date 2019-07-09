@@ -15,18 +15,19 @@ namespace DoNet.WebAPI
 
             GlobalConfiguration.Configuration
                 .EnableSwagger(c =>
-                    {
-                        c.SingleApiVersion("v1", "DoNet.WebAPI");
-                        c.IncludeXmlComments(GetXmlCommentsPath());
-                        c.OperationFilter<HttpHeaderFilter>();
-                    })
+                {
+                    c.SingleApiVersion("v1", "DoNet.WebAPI");
+                    c.IncludeXmlComments(GetXmlCommentsPath());
+                    c.OperationFilter<HttpHeaderFilter>();
+                })
                 .EnableSwaggerUi(c =>
-                    {
-                    });
+                {
+                });
         }
         private static string GetXmlCommentsPath()
         {
             return string.Format("{0}/bin/DoNet.WebAPI.xml", System.AppDomain.CurrentDomain.BaseDirectory);
+
         }
     }
 }
