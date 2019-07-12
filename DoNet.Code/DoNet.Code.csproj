@@ -106,10 +106,10 @@
     <Compile Include="GZip.cs" />
     <Compile Include="Json\Json.cs" />
     <Compile Include="JWT\JwtHelper.cs" />
-    <Compile Include="Log\DataOperateLogEntity.cs" />
-    <Compile Include="Log\Log.cs" />
-    <Compile Include="Log\LogFactory.cs" />
-    <Compile Include="Log\LogType.cs" />
+    <Compile Include="LogExt\DataOperateLogEntity.cs" />
+    <Compile Include="LogExt\Log.cs" />
+    <Compile Include="LogExt\LogFactory.cs" />
+    <Compile Include="LogExt\LogType.cs" />
     <Compile Include="Mail\MailHelper.cs" />
     <Compile Include="Net\HttpMethods.cs" />
     <Compile Include="Net\Net.cs" />
